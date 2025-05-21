@@ -1,25 +1,62 @@
-# 🪐 Build Asteroids Pygame
+# 🚀 AngryAsteroids: Pygame Space Adventure
 
-A beginner-friendly Asteroids-style game built with [Pygame](https://www.pygame.org/). 
-This project is designed to practice core game development concepts in Python, including game loops, screen rendering, event handling, and modular code with constants.
+A hilarious and chaotic take on the classic *Asteroids* game 
+— now starring a custom spaceship (my girlfriend!) and asteroids (myself). Built with Python + Pygame and packed with sounds, visuals, and endless fun!
 
-## 🚀 Features
+---
 
-- Pygame window setup
-- Screen rendering and fill logic
-- Constant values for screen size and game tuning
-- Event handling with graceful quitting
-- Modular code with `main.py` and `constants.py`
+## 🎮 Gameplay Highlights
 
-## 🧰 Technologies Used
+- **Custom images**: Your spaceship and asteroids are literally ME (and my girlfriend 😎)
+- **Smooth controls**: Rotate, thrust, and shoot with intuitive keyboard input
+- **Realistic movement**: Velocity, friction, momentum, and wrapping space
+- **Asteroid splitting**: Larger asteroids split into smaller ones when hit
+- **Lives system**: Lose lives on impact — with temporary invincibility and visual feedback
+- **Dynamic difficulty**: Game scales in intensity as you level up
+- **Score tracking & levels** (coming soon!)
+- **Boss battles** (coming soon!)
 
-- Python 3
-- Pygame
-- Git + GitHub
+---
 
-## 📦 Requirements
+## 🎧 Custom Sound Effects
 
-Install dependencies from `requirements.txt`:
+- Shooting, collisions, and game over events have real audio clips recorded by the dev
+- Balanced volumes and cooldowns prevent sound chaos
 
-```bash
-pip install -r requirements.txt
+---
+
+## ⌨️ Controls
+
+| Key | Action |
+|-----|--------|
+| ← / → | Rotate ship |
+| ↑ | Thrust forward |
+| Spacebar | Shoot |
+| ESC | Quit game |
+
+---
+
+## 🧠 How It Works
+
+- Modular code structure (`player.py`, `asteroid.py`, `shot.py`, etc.)
+- Sprite groups for update and draw logic
+- Timer-based level progression
+- Wrapping logic keeps everything looping around the screen
+- Asteroids now vanish after 3 wraps to avoid long chases
+
+---
+
+## 🖼️ Assets
+
+- Custom PNG images with transparent backgrounds
+- Flame animation when thrusting
+- Pixel-perfect collision detection using circles
+
+---
+
+## 📦 Getting Started
+
+1. Clone the repo  
+   ```bash
+   [git clone https://github.com/JCCampos8890/build_asteroids_pygame)
+   cd AngryAsteroids

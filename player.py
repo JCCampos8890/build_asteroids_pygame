@@ -1,26 +1,27 @@
 import pygame
+import math
+from constants import *
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_SPEED, PLAYER_TURN_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN
 from shot import Shot
 
 class Player(CircleShape):
     def __init__(self, x, y, shoot_sound):
-        # Load both idle and flame images
+        # Load images
         self.ship_img = pygame.image.load("assets/ship.png").convert_alpha()
         self.ship_flame_img = pygame.image.load("assets/shipflame.png").convert_alpha()
+        self.ship_flame_img_dizzy = pygame.image.load("assets/shipflame_dizzy.png").convert_alpha()
 
-        # Visual scale
-        diameter = PLAYER_RADIUS * 4
-        self.ship_img = pygame.transform.scale(self.ship_img, (int(diameter), int(diameter)))
-        self.ship_flame_img = pygame.transform.scale(self.ship_flame_img, (int(diameter), int(diameter)))
+        diameter = PLAYER_RADIUS * 4  
 
-        self.image = self.ship_img  # Default image
+        self.ship_img = pygame.transform.scale(self.ship_img, (diameter, diameter))
+        self.ship_flame_img = pygame.transform.scale(self.ship_flame_img, (diameter, diameter))
+        self.ship_flame_img_dizzy = pygame.transform.scale(self.ship_flame_img_dizzy, (diameter, diameter)) 
 
-        # Create red-tinted versions for invincibility
+        self.image = self.ship_img
+        
         self.ship_img_red = self._tint_image(self.ship_img, (255, 80, 80))
         self.ship_flame_img_red = self._tint_image(self.ship_flame_img, (255, 80, 80))
 
-        # Set collision radius to match visual size
         visual_radius = diameter // 2.1
         super().__init__(x, y, visual_radius)
 
@@ -35,8 +36,10 @@ class Player(CircleShape):
         self.invincible = False
         self.invincibility_timer = 0.0
 
-        # Sound
         self.shoot_sound = shoot_sound
+
+        self.dizzy = False
+        self.dizzy_timer = 0.0
 
     def _tint_image(self, image, tint_color):
         tinted = image.copy()
@@ -46,38 +49,69 @@ class Player(CircleShape):
         return tinted
 
     def draw(self, screen):
-        if self.image == self.ship_flame_img:
-            base_image = self.ship_flame_img
-            red_image = self.ship_flame_img_red
+    # Choose base flame image
+        if self.image == self.ship_flame_img or self.image == self.ship_flame_img_dizzy:
+            if self.dizzy:
+                base_image = self.ship_flame_img_dizzy
+                red_image = self._tint_image(base_image, (255, 80, 80))
+            else:
+                base_image = self.ship_flame_img
+                red_image = self.ship_flame_img_red
         else:
             base_image = self.ship_img
             red_image = self.ship_img_red
 
+        # Handle invincibility blink effect
         if self.invincible:
             blink = (pygame.time.get_ticks() // 100) % 2 == 0
             image_to_draw = red_image if blink else base_image
         else:
             image_to_draw = base_image
 
-        rotated_image = pygame.transform.rotate(image_to_draw, -self.rotation)
+        # Handle dizzy wobble
+        if self.dizzy:
+            wobble_offset = 5 * math.sin(pygame.time.get_ticks() / 100)
+            rotated_image = pygame.transform.rotate(image_to_draw, -self.rotation + wobble_offset)
+        else:
+            rotated_image = pygame.transform.rotate(image_to_draw, -self.rotation)
+
+
         rect = rotated_image.get_rect(center=(int(self.position.x), int(self.position.y)))
         screen.blit(rotated_image, rect)
+
 
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
-        self.wrap_position()
 
-        if keys[pygame.K_LEFT]:
+        # Handle dizzy effect
+        if self.dizzy:
+            self.dizzy_timer -= dt
+            if self.dizzy_timer <= 0:
+                self.dizzy = False
+
+        left = pygame.K_LEFT
+        right = pygame.K_RIGHT
+        up = pygame.K_UP
+
+        if self.dizzy:
+            left, right = right, left  # Invert controls when dizzy
+
+        if keys[left]:
             self.rotate(-dt)
-        if keys[pygame.K_RIGHT]:
+        if keys[right]:
             self.rotate(dt)
 
-        if keys[pygame.K_UP]:
+        if keys[up]:
             thrust = pygame.Vector2(0, -1).rotate(self.rotation)
             self.velocity += thrust * self.acceleration * dt
+
+        # Always assign image based on dizzy state and thrusting
+        if self.dizzy:
+            self.image = self.ship_flame_img_dizzy
+        elif keys[up]:
             self.image = self.ship_flame_img
         else:
             self.image = self.ship_img
@@ -100,6 +134,8 @@ class Player(CircleShape):
             if self.invincibility_timer <= 0:
                 self.invincible = False
 
+        self.wrap_position()
+
     def shoot(self):
         forward = pygame.Vector2(0, -1).rotate(self.rotation)
         velocity = forward * PLAYER_SHOOT_SPEED
@@ -109,9 +145,23 @@ class Player(CircleShape):
 
     def lose_life(self):
         self.lives -= 1
+        self.dizzy = False
+        self.dizzy_timer = 0
         if self.lives <= 0:
             return True
         else:
             self.invincible = True
             self.invincibility_timer = 2.0
             return False
+
+
+    def apply_dizzy(self, duration=3.0):
+        self.dizzy = True
+        self.dizzy_timer = duration
+        pygame.mixer.Sound("assets/iugh.wav").play()
+
+    def push_back_from(self, source_position, force=8):
+        direction = self.position - source_position
+        if direction.length() > 0:
+            direction = direction.normalize()
+            self.velocity += direction * force

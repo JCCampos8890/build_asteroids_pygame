@@ -1,43 +1,41 @@
 import pygame
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
-def show_intro(screen, font):
-    screen.fill((0, 0, 0))
-    title = font.render("🚀 Love & Asteroids", True, (255, 255, 255))
-    instructions = font.render("Arrow keys to move | Space to shoot", True, (200, 200, 200))
-    prompt = font.render("Press ENTER to start", True, (100, 255, 100))
-
-    screen.blit(title, title.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 60)))
-    screen.blit(instructions, instructions.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)))
-    screen.blit(prompt, prompt.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 40)))
-
-    pygame.display.flip()
-
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit(); exit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-                waiting = False
+def show_intro(screen):
+    _show_static_screen(screen, "assets/opening.png", wait_for="enter")
 
 def show_game_over(screen, font):
-    screen.fill((0, 0, 0))
-    title = font.render("💥 Game Over!", True, (255, 0, 0))
-    prompt = font.render("Press R to Restart or Q to Quit", True, (255, 255, 255))
+    _show_static_screen(screen, "assets/gameover.png", wait_for="r_or_q")
 
-    screen.blit(title, title.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 20)))
-    screen.blit(prompt, prompt.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 30)))
+def _show_static_screen(screen, image_path, wait_for="enter"):
+    clock = pygame.time.Clock()
 
-    pygame.display.flip()
+    # Load and scale image to fit screen
+    image = pygame.image.load(image_path).convert()
+    screen_rect = screen.get_rect()
+    img_rect = image.get_rect()
+
+    scale = min(screen_rect.width / img_rect.width, screen_rect.height / img_rect.height)
+    new_size = (int(img_rect.width * scale), int(img_rect.height * scale))
+    image = pygame.transform.scale(image, new_size)
+    img_rect = image.get_rect(center=screen_rect.center)
 
     waiting = True
     while waiting:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit(); exit()
+
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    waiting = False
-                elif event.key == pygame.K_q:
-                    pygame.quit(); exit()
+                if wait_for == "enter" and event.key == pygame.K_RETURN:
+                    return
+                elif wait_for == "r_or_q":
+                    if event.key == pygame.K_r:
+                        return "restart"
+                    elif event.key == pygame.K_q:
+                        pygame.quit(); exit()
+
+        screen.fill((0, 0, 0))
+        screen.blit(image, img_rect)
+        pygame.display.flip()
+        clock.tick(60)  # prevent flickering

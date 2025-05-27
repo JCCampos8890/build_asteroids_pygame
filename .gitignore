@@ -1,3 +1,20 @@
-venv/
+# Python cache and compiled files
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
 
+# Virtual environment folders
+.venv/
+venv/
+
+# macOS system files
+.DS_Store
+assets/.DS_Store
+
+# VS Code settings (optional but clean)
+.vscode/
+
+# Logs and temp files
+*.log

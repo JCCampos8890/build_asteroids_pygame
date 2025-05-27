@@ -2,8 +2,6 @@
 
 A chaotic, hilarious, and hand-crafted take on the classic *Asteroids* arcade game — starring my girlfriend as the pilot, me as the asteroids, and my dog as the final boss. Built with Python + Pygame as a portfolio passion project.
 
-![Gameplay GIF](assets/demo.gif) <!-- Replace with actual GIF path -->
-
 ---
 
 ## 🚮 Why I Built This
@@ -125,8 +123,8 @@ Created by [@JCCampos8890](https://github.com/JCCampos8890)
 
 Special thanks to:
 
-* My girlfriend (for being the pilot and recording the sounds)
+* My girlfriend (for being the pilot and recording the sounds <3)
 * My dog Mika (for being the most awesome boss)
-* Pygame + OpenGameArt
+* Pygame
 
 

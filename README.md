@@ -1,62 +1,132 @@
-# 🚀 AngryAsteroids: Pygame Space Adventure
+# 🚀 AngryLove & Asteroids: A Pygame Space Adventure
 
-A hilarious and chaotic take on the classic *Asteroids* game 
-— now starring a custom spaceship (my girlfriend!) and asteroids (myself). Built with Python + Pygame and packed with sounds, visuals, and endless fun!
+A chaotic, hilarious, and hand-crafted take on the classic *Asteroids* arcade game — starring my girlfriend as the pilot, me as the asteroids, and my dog as the final boss. Built with Python + Pygame as a portfolio passion project.
 
----
-
-## 🎮 Gameplay Highlights
-
-- **Custom images**: Your spaceship and asteroids are literally ME (and my girlfriend 😎)
-- **Smooth controls**: Rotate, thrust, and shoot with intuitive keyboard input
-- **Realistic movement**: Velocity, friction, momentum, and wrapping space
-- **Asteroid splitting**: Larger asteroids split into smaller ones when hit
-- **Lives system**: Lose lives on impact — with temporary invincibility and visual feedback
-- **Dynamic difficulty**: Game scales in intensity as you level up
-- **Score tracking & levels** (coming soon!)
-- **Boss battles** (coming soon!)
+![Gameplay GIF](assets/demo.gif) <!-- Replace with actual GIF path -->
 
 ---
 
-## 🎧 Custom Sound Effects
+## 🚮 Why I Built This
 
-- Shooting, collisions, and game over events have real audio clips recorded by the dev
-- Balanced volumes and cooldowns prevent sound chaos
+This project began as a fun way to learn Pygame, but quickly evolved into a full-featured game with custom enemies, levels, and cutscenes. I wanted to:
+
+* Build something original and funny with people I love
+* Practice clean, modular game architecture in Python
+* Create polished features from sound, UI, and collision systems
+
+This game helped sharpen my logic, animation, and debugging skills. And it made my friends laugh. Win-win.
+
+---
+
+## 🎓 What I Learned
+
+* Object-Oriented Game Architecture
+* Sprite Group Management in Pygame
+* Circle and Rectangle Collision Detection
+* Frame-based Animation and State Machines
+* Sound Integration and Custom Debugging Tools
+
+---
+
+## 🎮 Gameplay Features
+
+* 🚗 **Custom Ship**: My girlfriend flies the ship
+* 🪨 **Asteroids Are Me**: Literally my face on space rocks
+* 🚶 **Mikitos**: Funny baby dog enemies that shoot poop to make you dizzy
+* 🐶 **Final Boss Mika**: Two epic stages with cookie bombs and mikitos spawns
+* 🔄 Wrapping screen edges like a true space sim
+* ✨ Visual feedback when hit (flashing, dizzy, invincible)
+* 🎧 Real sound effects recorded by me (yes, including "iugh.wav")
+* 🏆 Victory cutscene and boss defeat sequence
+
+---
+
+## 🔧 Tech Stack
+
+* Python 3.11+
+* Pygame 2.x
+* OOP-based modular design
+* SpriteGroups for update/draw
+* Custom collision & movement logic
 
 ---
 
 ## ⌨️ Controls
 
-| Key | Action |
-|-----|--------|
-| ← / → | Rotate ship |
-| ↑ | Thrust forward |
-| Spacebar | Shoot |
-| ESC | Quit game |
+| Key   | Action              |
+| ----- | ------------------- |
+| ← / → | Rotate spaceship    |
+| ↑     | Thrust forward      |
+| Space | Shoot               |
+| R     | Restart (Game Over) |
+| Q     | Quit (Game Over)    |
 
 ---
 
-## 🧠 How It Works
+## 🔮 Developer Mode
 
-- Modular code structure (`player.py`, `asteroid.py`, `shot.py`, etc.)
-- Sprite groups for update and draw logic
-- Timer-based level progression
-- Wrapping logic keeps everything looping around the screen
-- Asteroids now vanish after 3 wraps to avoid long chases
+Enable extra features in `devtools.py`:
 
----
-
-## 🖼️ Assets
-
-- Custom PNG images with transparent backgrounds
-- Flame animation when thrusting
-- Pixel-perfect collision detection using circles
+```python
+DEV_MODE = True        # Start at any level instantly
+SKIP_TO_LEVEL = 10     # Skip to boss for testing
+GOD_MODE = True        # Infinite lives
+SHOW_HITBOXES = True   # Show all entity hitboxes
+```
 
 ---
 
-## 📦 Getting Started
+## 📂 Project Structure
 
-1. Clone the repo  
-   ```bash
-   [git clone https://github.com/JCCampos8890/build_asteroids_pygame)
-   cd AngryAsteroids
+```
+.
+├── main.py             # Game loop & state manager
+├── asteroid.py         # Asteroid logic and splitting
+├── enemy.py            # Mikito AI and bullets
+├── finalboss.py        # Mika boss phases and cookies
+├── player.py           # Movement, shooting, dizzy logic
+├── shot.py             # Projectiles
+├── screens.py          # Intro, game over, cutscenes
+├── circleshape.py      # Base class for circular sprites
+├── rectangleshape.py   # Base class for boss hitboxes
+├── constants.py        # All tunable values
+├── devtools.py         # Debug toggles and cheats
+└── assets/             # Images, sounds, and fonts
+```
+
+---
+
+## 📊 Getting Started
+
+1. **Clone the repo**
+
+```bash
+git clone https://github.com/JCCampos8890/build_asteroids_pygame
+cd build_asteroids_pygame
+```
+
+2. **Install dependencies**
+
+```bash
+pip install pygame
+```
+
+3. **Launch the game**
+
+```bash
+python main.py
+```
+
+---
+
+## 💍 Credits
+
+Created by [@JCCampos8890](https://github.com/JCCampos8890)
+
+Special thanks to:
+
+* My girlfriend (for being the pilot and recording the sounds)
+* My dog Mika (for being the most awesome boss)
+* Pygame + OpenGameArt
+
+
